@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { push } from 'react-router-redux';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { device } from '../../common/MediaQueries/device';
 import { ActionButton } from '../';
 import { Menu } from 'styled-icons/feather/Menu';
@@ -10,25 +11,25 @@ import { white, transparentBlack } from '../../themes/colors';
 import { bodyBold } from '../../themes/fonts';
 
 const NavItem = styled(NavLink)`
-    /* color: rgb(225, 182, 197); */
-    color: ${transparentBlack};
-    font-weight: bold;
-    text-decoration: none;
-    margin-bottom: 2em;
-    /* padding: 10px; */
-    /* margin: 5px; */
-    font-family: ${bodyBold};
-    font-style: normal;
-    font-weight: 700;
-    display: inline-block;
+  /* color: rgb(225, 182, 197); */
+  color: ${transparentBlack};
+  font-weight: bold;
+  text-decoration: none;
+  margin-bottom: 2em;
+  /* padding: 10px; */
+  /* margin: 5px; */
+  font-family: ${bodyBold};
+  font-style: normal;
+  font-weight: 700;
+  display: inline-block;
+  &:hover {
+    color: black;
+  }
+  @media ${device.laptop} {
     &:hover {
       color: black;
     }
-    @media ${device.laptop} {
-      &:hover {
-      color: black;
-    }
-    }
+  }
 `;
 
 // const activeStyle = {
@@ -41,36 +42,58 @@ const NavItem = styled(NavLink)`
 class AppHeader extends Component {
   state = {
     dropDownVisible: false
-  }
+  };
   renderDropDown() {
     const { dropDownVisible } = this.state;
     if (dropDownVisible) {
       return (
-        <div onClick={() => this.setState({ dropDownVisible: false })} style={{ position: 'absolute', top: 4, left: 0, height: '100%', width: '100%', backgroundColor: 'white', display: 'flex', justifyContent: 'center' }}>
+        <div
+          onClick={() => this.setState({ dropDownVisible: false })}
+          style={{
+            position: 'absolute',
+            top: 4,
+            left: 0,
+            height: '100%',
+            width: '100%',
+            backgroundColor: 'white',
+            display: 'flex',
+            justifyContent: 'center'
+          }}
+        >
           {this.renderNavItems()}
         </div>
-      )
+      );
     }
   }
   renderNavItems() {
+    const { push } = this.props.history;
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '50%' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '50%'
+        }}
+      >
         <NavItem
           exact
-          to="/"
+          to='/'
           // activeStyle={activeStyle}
         >
           UPDATES
         </NavItem>
         <NavItem
-          to="/auth"
+          to='/auth'
           // activeStyle={activeStyle}
         >
           SIGN OUT
         </NavItem>
-        <ActionButton text="ADD NEW UPDATE" onClick={() => this.props.history.push("/new")} />
+        {/* <ActionButton text='ADD NEW UPDATE' onClick={() => push('/new')} /> */}
+        <ActionButton text='ADD NEW UPDATE' onClick={() => push('/new')} />
       </div>
-    )
+    );
   }
   render() {
     const { dropDownVisible } = this.state;
@@ -79,12 +102,19 @@ class AppHeader extends Component {
     return (
       <div style={{ display: 'flex', flex: 1 }}>
         <NavBar>
-          {dropDownVisible 
-            ? 
-            <CloseIcon onClick={() => this.setState({dropDownVisible: !dropDownVisible})} />
-            :
-            <MenuIcon onClick={() => this.setState({dropDownVisible: !dropDownVisible})} />
-          }
+          {dropDownVisible ? (
+            <CloseIcon
+              onClick={() =>
+                this.setState({ dropDownVisible: !dropDownVisible })
+              }
+            />
+          ) : (
+            <MenuIcon
+              onClick={() =>
+                this.setState({ dropDownVisible: !dropDownVisible })
+              }
+            />
+          )}
         </NavBar>
         {this.renderDropDown()}
       </div>
@@ -92,9 +122,8 @@ class AppHeader extends Component {
   }
 }
 
-
-
-{/*
+{
+  /*
   class AppHeader extends Component {
   render() {
     return (  
@@ -121,16 +150,17 @@ class AppHeader extends Component {
     );
   }
 }
-*/}
+*/
+}
 
 const NavBar = styled.div`
-  z-index: 1; 
-  height: 4em; 
-  width: 100%; 
-  background-color: white; 
-  display: flex; 
-  flex-direction: row; 
-  justify-content: flex-end; 
+  z-index: 1;
+  height: 4em;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.25);
 `;
@@ -146,10 +176,10 @@ const CompactHeader = styled.div`
 `;
 
 const MenuIcon = styled(Menu)`
-/* display: flex;
+  /* display: flex;
 align-self: flex-end; */
-height: 2em;
-padding-right: 1em;
+  height: 2em;
+  padding-right: 1em;
   position: absolute;
   top: 3;
   right: 3;
@@ -160,10 +190,10 @@ padding-right: 1em;
 `;
 
 const CloseIcon = styled(Close)`
-/* display: flex;
+  /* display: flex;
 align-self: flex-end; */
-height: 2em;
-padding-right: 1em;
+  height: 2em;
+  padding-right: 1em;
   position: absolute;
   top: 3;
   right: 3;
@@ -175,7 +205,7 @@ padding-right: 1em;
 
 // const Header = styled.header`
 //   display: flex;
-  
+
 //   @media (max-width: 768px) {
 //     position: absolute;
 //     top: 0;
@@ -189,7 +219,7 @@ padding-right: 1em;
 
 const Header = styled.header`
   display: flex;
-  
+
   /* position: absolute;
   top: 0;
   left: 0; */
@@ -211,11 +241,11 @@ const Title = styled.h1`
   display: inline;
 `;
 
-
- 
+AppHeader = withRouter(AppHeader);
 export { AppHeader };
 
-{/*
+{
+  /*
 <!DOCTYPE html>
 <html>
 <head>
@@ -276,4 +306,5 @@ function myFunction(x) {
   x.classList.toggle("change");
 }
 </script>
-*/}
+*/
+}
