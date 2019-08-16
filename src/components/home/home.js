@@ -10,29 +10,36 @@ import { HeadingOne, Table } from '../../common';
 const Wrapper = styled.div`
   padding: 1em;
   height: 100vh;
-  background-image: linear-gradient(to right, ${gradientLeft} , ${gradientRight});
+  background-image: linear-gradient(
+    to right,
+    ${gradientLeft},
+    ${gradientRight}
+  );
 `;
 
-const Header = styled.header`
-`;
+const Header = styled.header``;
 
 // const SubTitle = styled.h2`
 // `;
 
 class Home extends Component {
+  componentDidMount() {
+    const { getUpdates } = this.props.actions;
+    getUpdates();
+  }
   render() {
     console.log(this.props);
     const { data } = this.props.state;
     return (
       <Wrapper>
         <Header>
-          <HeadingOne text="Today I have..." />
+          <HeadingOne text='Today I have...' />
         </Header>
         <Table data={data} />
       </Wrapper>
     );
   }
-} 
+}
 
 export default connect(
   state => ({
